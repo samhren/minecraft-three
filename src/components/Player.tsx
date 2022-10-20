@@ -7,12 +7,10 @@ import { useKeyboard } from "../hooks/useKeyboard";
 const JUMP_HEIGHT = 4;
 
 export const Player = () => {
+    // handle keyboard input
     const actions = useKeyboard();
-    console.log(
-        "actions",
-        Object.entries(actions).filter(([key, value]) => value)
-    );
 
+    // get the camera and set the position
     const { camera } = useThree();
     const [ref, api] = useSphere(
         () => ({
