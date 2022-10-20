@@ -2,8 +2,17 @@ import { useSphere } from "@react-three/cannon";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Mesh, Vector3 } from "three";
+import { useKeyboard } from "../hooks/useKeyboard";
+
+const JUMP_HEIGHT = 4;
 
 export const Player = () => {
+    const actions = useKeyboard();
+    console.log(
+        "actions",
+        Object.entries(actions).filter(([key, value]) => value)
+    );
+
     const { camera } = useThree();
     const [ref, api] = useSphere(
         () => ({
@@ -31,6 +40,11 @@ export const Player = () => {
         camera.position.copy(
             new Vector3(pos.current[0], pos.current[1], pos.current[2])
         );
+
+        // Move the player
+        if (actions.jump && Math.abs(vel.current[1]) < 0.05) {
+            api.velocity.set(vel.current[0], JUMP_HEIGHT, vel.current[2]);
+        }
     });
 
     return <mesh ref={ref}></mesh>;
